@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonar Bangla Casino</title>
+    <style>
+        /* CSS styling for Bangladesh Theme */
+        body {
+            background-color: #006A4E; /* Bangladesh Green */
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            background-color: #F42A41; /* Bangladesh Red */
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .wallet-section {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .slot-machine {
+            background-color: #111;
+            border: 5px solid #F42A41;
+            border-radius: 15px;
+            display: inline-block;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        .reels {
+            font-size: 60px;
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+            background: #222;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #F42A41;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b31d2e;
+        }
+        button:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .deposit-mock {
+            margin-top: 40px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>shan11casino</h1>
+        <p>Free-to-Play Simulator</p>
+    </div>
+
+    <!-- Wallet Balance -->
+    <div class="wallet-section">
+        Balance: <span id="balance">1000</span> Free BDT
+    </div>
+
+    <!-- Free Daily Reward Button -->
+    <button onclick="getFreeBonus()" style="background-color: #008CBA; box-shadow: 0 4px 0 #006687; margin-bottom: 20px;">
+        Claim Free 500 BDT
+    </button>
+
+    <br>
+
+    <!-- Slot Machine Interface -->
+    <div class="slot-machine">
+        <div class="reels" id="reels">🐯 🌸 🛺</div>
+        <button onclick="spinSlots()">Spin (Cost: 100 BDT)</button>
+        <p id="message" style="font-size: 18px; margin-top: 15px; font-weight: bold;"></p>
+    </div>
+
+    <!-- Simulated payment menu -->
+    <div class="deposit-mock">
+        <h3>Simulated Free Demo Refill</h3>
+        <p>To test MFS flows, select a gateway to instantly refresh demo balances:</p>
+        <button onclick="mockDeposit(2000)" style="background-color: #e2136e; box-shadow: 0 4px 0 #a10b4e;">bKash Demo</button>
+        <button onclick="mockDeposit(5000)" style="background-color: #f6921e; box-shadow: 0 4px 0 #b56811;">Nagad Demo</button>
+    </div>
+
+    <script>
+        // Game Logic Script
+        let balance = 1000;
+        const symbols = ['🐯', '🌸', '🛺', '💎']; // Tiger, Water Lily, Rickshaw, Diamond
+
+        function updateDisplay() {
+            document.getElementById('balance').innerText = balance;
+        }
+
+        function getFreeBonus() {
+            balance += 500;
+            document.getElementById('message').innerText = "Claimed 500 free chips!";
+            updateDisplay();
+        }
+
+        function mockDeposit(amount) {
+            balance += amount;
+            document.getElementById('message').innerText = `Demo deposit of ${amount} BDT successful!`;
+            updateDisplay();
+        }
+
+        function spinSlots() {
+            if (balance < 100) {
+                document.getElementById('message').innerText = "Not enough BDT! Click a demo refill button below.";
+                return;
+            }
+
+            // Deduct entry fee
+            balance -= 100;
+            updateDisplay();
+
+            // Randomize outcomes
+            const r1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const r2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const r3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            // Render symbols to page
+            document.getElementById('reels').innerText = `${r1} ${r2} ${r3}`;
+
+            // Check win states
+            if (r1 === r2 && r2 === r3) {
+                balance += 1000; // Grand prize payout
+                document.getElementById('message').innerText = "🎉 JACKPOT! You won 1,000 BDT! 🎉";
+            } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                balance += 200; // Small prize payout
+                document.getElementById('message').innerText = "Match 2! You won 200 BDT.";
+            } else {
+                document.getElementById('message').innerText = "No match. Try again!";
+            }
+            updateDisplay();
+        }
+    </script>
+
+</body>
+</html>
